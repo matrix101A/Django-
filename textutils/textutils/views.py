@@ -12,52 +12,59 @@ def about(request):
     return HttpResponse("Age=19")
 
 def analyze(request):
+ data = request.GET.get('text', 'No text entered')
 
-    #get the text
-    djtext= request.GET.get('text','default')
-    removepunc=request.GET.get('removepunc','off')
-    fullcaps=request.GET.get('fullcaps','off')
-    newlineremover=request.GET.get('newlineremover','off')
-    extraspaceremover=request.GET.get('extraspaceremover','off')
+ remPunc = request.GET.get('removepunc', 'of')
+ caps = request.GET.get('fullcaps', 'of')
+ newLineRem = request.GET.get('newlineremover', 'of')
+ spaceRem = request.GET.get('extraspaceremover', 'of')
 
-    #analyze the text
-    analyzed = djtext
 
-    if removepunc=='on':
-        analyzed = ""
-        punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-        for char in djtext:
-            if char not in punctuations:
-                analyzed=analyzed+char
-        params={'purpose':'Removed Punctuations', 'analyzed_text':analyzed}
-        return render(request,'analyze.html',params)
+ strr = data
+ purpose = ""
 
-    elif (fullcaps == "on"):
-        analyzed=""
-        for char in djtext:
-            analyzed=analyzed+char.upper()
+ if remPunc == 'on':
+  tempStr = ""
+  puns = '''!@#$%^&*();'.,/:?>'''
+  for i in data:
+   if i not in puns:
+    tempStr = tempStr + i
+  params = {'purpose':'remove Punctuations' , 'answer':tempStr}
+  strr = tempStr
+  purpose += " | Remove Punctuations "
+  # return render(request, 'analyze.html', params)
+ if caps == 'on':
+  print("2",strr)
+  strr = strr.upper()
+  params = {'purpose':'Caps' , 'answer':strr}
+  purpose += "| Caps |"
+  # return render(request, 'analyze.html', params)
 
-        params = {'purpose': 'Changed to upper case ', 'analyzed_text': analyzed}
-        return render(request, 'analyze.html', params)
+ if newLineRem == 'on':
+  tempStr=""
+  for i in strr:
+   if i != '\n':
+    tempStr += i
+  params = {'purpose':'New Line remove' , 'answer':tempStr}
+  strr = tempStr
+  purpose += "| remove new line "
+  # return render(request, 'analyze.html', params)
 
-    elif newlineremover=="on":
-        analyzed=""
-        for char in djtext:
-            if(char!="\n"):
-                analyzed=analyzed+char
+ if spaceRem == 'on':
+  tempStr = ""
+  for index, ch in enumerate(strr):
+   if not (strr[index] == " " and strr[index+1]==" "):
+    tempStr += ch
+  params = {'purpose':'spaces remove' , 'answer':tempStr}
+  strr = tempStr
+  purpose += "| Spaces remove |"
 
-    elif extraspaceremover == "on":
-        analyzed = ""
-        for index,char in enumerate(djtext):
-            if not(djtext[index]==" " and djtext[index+1]==" "):
-                analyzed+=char
+ params = {'purpose':purpose , 'answer':strr}
 
-        params = {'purpose': 'Removed new line', 'analyzed_text': analyzed}
-        return render(request, 'analyze.html', params)
-
-    else:
-      return HttpResponse(analyzed)
-
+ if remPunc == 'on' or caps == 'on' or newLineRem == 'on' or spaceRem == 'on':
+  return render(request, 'analyze.html', params)
+ else:
+  return HttpResponse('error hai bhai')
 
 
 
