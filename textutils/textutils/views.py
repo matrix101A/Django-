@@ -2,22 +2,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-
 def index(request):
     return render(request,'index.html')
-    #return HttpResponse('''<h1>Hello Abhinav Bhai!<h1> <a href="https://www.w3schools.com">Visit W3Schools.com!</a> ''')
-
-
-def about(request):
-    return HttpResponse("Age=19")
 
 def analyze(request):
- data = request.GET.get('text', 'No text entered')
+ data = request.POST.get('text', 'No text entered')
 
- remPunc = request.GET.get('removepunc', 'of')
- caps = request.GET.get('fullcaps', 'of')
- newLineRem = request.GET.get('newlineremover', 'of')
- spaceRem = request.GET.get('extraspaceremover', 'of')
+ remPunc = request.POST.get('removepunc', 'of')
+ caps = request.POST.get('fullcaps', 'of')
+ newLineRem = request.POST.get('newlineremover', 'of')
+ spaceRem = request.POST.get('extraspaceremover', 'of')
 
 
  strr = data
@@ -42,9 +36,10 @@ def analyze(request):
 
  if newLineRem == 'on':
   tempStr=""
-  for i in strr:
-   if i != '\n':
-    tempStr += i
+  for i in range(len(strr)):
+   print(strr[i])
+   if strr[i] is not '\n' and strr[i] is not '\r':
+    tempStr += strr[i]
   params = {'purpose':'New Line remove' , 'answer':tempStr}
   strr = tempStr
   purpose += "| remove new line "
@@ -53,7 +48,7 @@ def analyze(request):
  if spaceRem == 'on':
   tempStr = ""
   for index, ch in enumerate(strr):
-   if not (strr[index] == " " and strr[index+1]==" "):
+   if not (index<len(strr)-1 and strr[index] == " " and strr[index+1]==" "):
     tempStr += ch
   params = {'purpose':'spaces remove' , 'answer':tempStr}
   strr = tempStr
@@ -66,16 +61,3 @@ def analyze(request):
  else:
   return HttpResponse('error hai bhai')
 
-
-
-def capfirst(request):
-    return HttpResponse("capitalize first")
-def newlineremove(request):
-
-    return HttpResponse("capitalize first")
-def spaceremove(request):
-
-    return HttpResponse("<h1>space remover</h1> <a href='/'>Back</a>")
-def charcount(request):
-
-    return HttpResponse("charcount ")
