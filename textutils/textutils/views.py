@@ -28,7 +28,7 @@ def analyze(request):
   purpose += " | Remove Punctuations "
   # return render(request, 'analyze.html', params)
  if caps == 'on':
-  print("2",strr)
+  
   strr = strr.upper()
   params = {'purpose':'Caps' , 'answer':strr}
   purpose += "| Caps |"
@@ -37,7 +37,7 @@ def analyze(request):
  if newLineRem == 'on':
   tempStr=""
   for i in range(len(strr)):
-   print(strr[i])
+   
    if strr[i] is not '\n' and strr[i] is not '\r':
     tempStr += strr[i]
   params = {'purpose':'New Line remove' , 'answer':tempStr}
