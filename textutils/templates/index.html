@@ -45,7 +45,7 @@
     <form action="/analyze" method="post">{% csrf_token %}
 
   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Enter your text below</label>
+    <label for="exampleFormControlTextarea1" id="ShowText">Enter your text below</label>
     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="9"></textarea>
   </div>
 
@@ -75,4 +75,19 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
+  <script>
+    var text="Type your text and let Text utils do the magic !"
+    var i=0;
+    setInterval(showAlert, 70);
+   function showAlert()
+   {
+     if(i==text.length)
+     i=0
+     else{
+       i=i+1;
+      document.getElementById('ShowText').innerHTML=text.substring(0,i);
+     }
+     
+   }
+  </script>
 </html>
